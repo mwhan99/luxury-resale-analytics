@@ -1,0 +1,12 @@
+ # Never commit real business data. Only data/demo_tracker.xlsx and data/blank_tracker.xlsx belong here.
+ private/
+ *real*.xlsx
+ *REAL*.xlsx
+ *private*.xlsx
+ *Shipment*.xlsx
+ data/tracker.xlsx
+
+ __pycache__/
+ .pytest_cache/
+ .DS_Store
+ .streamlit/secrets.toml

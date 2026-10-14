@@ -28,16 +28,17 @@ Key questions:
 - **Comparables, not machine learning, for now.** With a few dozen bags, a predictive model would mostly fit noise. The app uses medians and quartiles of comparable sales and says how many bags each estimate rests on. A regression model is planned at ~80–100 sold bags.
 - **Lots are priced as a whole.** Because clearance lots arrive unselected, the decision is the lot price, not individual bags, so the lot calculator works from sell-through and net payout per sold bag.
 - **Fees come from each platform's published UK seller fees, not his records,** because most of his sales had no fee recorded. They're kept in one file with sources and a check date, since platforms change fees often. Shopify's extra costs are labelled assumptions the user can adjust.
-- **Shopify is judged against each marketplace, not in isolation.** Most UK marketplaces are now free or nearly free for sellers, so his own store only pays off if it adds price or saves fees that outweigh its extra costs. A toggle switches to business-seller fees, since eBay's free private-seller option ends once he trades as a registered brand.
+- **Shopify is judged against each marketplace, not in isolation.** Most UK marketplaces are now free or nearly free for sellers, so his own store only pays off if it adds price or saves fees that outweigh its extra costs. A toggle switches to business-seller fees, since eBay's free private-seller option ends once he trades as a registered brand. Another swaps in his actual fee rate on any platform where at least two sales have a recorded fee, without treating blank fees as zero.
 - **Estimated data is flagged, not hidden.** Rows with unrecorded fees are marked so overstated profit is visible.
 
-## Early findings (shipment 1, 14 bags: patterns to test, not conclusions)
+## Early findings (shipment 1, 15 bags: patterns to test, not conclusions)
 
-- **The founder's own records overstated profit by roughly 45%**, mainly because unsold bags were counted as sales and recorded platform fees were left out of the profit formula.
-- **Clearance lots beat hand-picked stock on return.** Clearance-lot bags earned about an 80% margin; the one hand-picked premium bag earned about 33% while tying up roughly ten times as much money.
-- **Fees differ sharply by channel.** Vestiaire Collective takes about 15% of the sale; Vinted takes nothing from the seller and Depop about 3%.
-- **Shopify only pays off for premium bags.** On a typical clearance bag, his own store earns about half what Vinted does once marketing, authentication, postage, packaging and returns are counted, and would need a ~40% higher price to match. On a premium bag it beats Vestiaire Collective by a few percent of the sale price and covers its fixed costs from about 2–3 sales a month, provided winning each buyer costs under roughly £40.
-- Fees and listing/sale dates were missing for most bags, so days-to-sell can't be measured yet and profit is likely still overstated.
+- **The founder's own records overstated realized profit by roughly 45% at the time of review**, mainly because bags still in stock were counted as sales and recorded platform fees were left out of the profit formula. His ROI column was also multiplied by 100 twice.
+- **Clearance lots beat hand-picked stock on return.** 13 of 14 clearance-lot bags have sold at about an 80% margin; the one hand-picked premium bag earned about 33% while tying up roughly ten times as much money.
+- **His real Vestiaire Collective fees are higher than published.** Two sales with recorded fees both came to about 19% of the sale price, against roughly 15% on the published schedule. The app can use either.
+- **Shopify only pays off for premium bags.** On a typical clearance bag, his own store earns well under what Vinted does once marketing, authentication, postage, packaging and returns are counted, and would need a ~35–40% higher price to match. On a premium bag it beats Vestiaire Collective: by a few percent of the sale price at published fees (covering its fixed costs from 2–3 sales a month), and by about 7% at his actual fees (from about one sale a month).
+- **His most profitable sale came through his personal network**: a private sale with no platform fee, which supports building a direct customer list.
+- Fees and listing/sale dates are still missing for most bags, so days-to-sell can't be measured yet and profit is likely still overstated.
 
 ## Run it
 

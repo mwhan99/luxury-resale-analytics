@@ -74,6 +74,21 @@ view = df[df["lot"].isin(chosen)] if chosen else df
 st.sidebar.header("Selling setup")
 business = st.sidebar.toggle("Trading as a registered business", value=False,
                              help="Removes eBay's free private-seller option and uses business fees.")
+observed = ch_mod.observed_fee_rates(df)
+use_actual = st.sidebar.toggle("Use his actual fee rates where known", value=bool(observed),
+                               disabled=not observed,
+                               help=f"Where he has at least {ch_mod.MIN_OBSERVED_SALES} sales with a recorded "
+                                    "fee on a platform, use his real fee rate instead of the published one.")
+if observed:
+    for name, (rate, n) in observed.items():
+        pub = ch_mod.platform_fees(ch_mod.FEES[name], 500) / 500
+        st.sidebar.caption(f"{name}: his actual {rate:.1%} from {n} sales vs ~{pub:.0%} published")
+else:
+    st.sidebar.caption(f"No platform has {ch_mod.MIN_OBSERVED_SALES}+ sales with recorded fees yet, "
+                       "so published fees are used.")
+fees_used = ch_mod.fee_table(observed if use_actual else None)
+fee_basis = ("his actual fee rates where known, published UK seller fees elsewhere" if use_actual and observed
+             else "published UK seller fees")
 with st.sidebar.expander("Shopify cost assumptions"):
     st.caption("Assumptions, not sourced figures. Used by the break-even and single-bag tabs.")
     shop = ch_mod.ShopifyCosts(
@@ -259,7 +274,7 @@ with tab_single:
                                     min_value=0.0, value=float(round(default_price)), step=10.0)
 
     landed = cost + inbound1
-    out = ch_mod.per_bag_table(exp_price, landed, shop, business=business)
+    out = ch_mod.per_bag_table(exp_price, landed, shop, business=business, fees=fees_used)
     out["Return per £"] = out["Profit per bag (£)"] / landed if landed else np.nan
     out = out.sort_values("Profit per bag (£)", ascending=False)
     st.dataframe(out[["Channel", "Platform fees (£)", "Shopify-only costs (£)", "Profit per bag (£)",
@@ -272,15 +287,14 @@ with tab_single:
     msg = f"**{sig}**: best channel is {best['Channel']} ({gbp(best['Profit per bag (£)'])} profit, " \
           f"{pct(best['Margin'])} margin). {why}"
     {"BUY": st.success, "PASS": st.error, "CHECK": st.warning}[sig](msg)
-    st.caption(f"Platform fees: published UK seller fees checked {ch_mod.FEES_CHECKED}. Shopify costs "
-               "come from the sidebar assumptions. Assumes the same price on every channel.")
+    st.caption(f"Platform fees: {fee_basis} (published fees checked {ch_mod.FEES_CHECKED}). Shopify "
+               "costs come from the sidebar assumptions. Assumes the same price on every channel.")
 
 # ---------------------------------------------------------------- shopify break-even
 with tab_shop:
     st.subheader("Should he sell through his own Shopify store, and which bags?")
-    st.caption("Compares selling the same bag on his own store with each marketplace, using "
-               f"published UK seller fees (checked {ch_mod.FEES_CHECKED}) and the Shopify assumptions "
-               "in the sidebar.")
+    st.caption(f"Compares selling the same bag on his own store with each marketplace, using {fee_basis} "
+               f"(published fees checked {ch_mod.FEES_CHECKED}) and the Shopify assumptions in the sidebar.")
     typ = ch_mod.typical_bags(df)
     kind = st.radio("Bag type", ["Clearance lot", "Selected single"], horizontal=True,
                     format_func=lambda k: {"Clearance lot": "Clearance-lot bag",
@@ -306,7 +320,7 @@ with tab_shop:
     disc = b2.slider("Discount on Vinted / Depop / eBay", 0, 50, 0, 5, format="%d%%", key=f"disc_{kind}",
                      help="A premium bag may not reach full price on a general marketplace.")
     prem, disc = prem / 100, disc / 100
-    kw = dict(business=business, shopify_premium=prem, marketplace_discount=disc)
+    kw = dict(business=business, shopify_premium=prem, marketplace_discount=disc, fees=fees_used)
 
     per = ch_mod.per_bag_table(price, landed_b, shop, **kw)
     be, summ = ch_mod.breakeven_table(price, landed_b, shop, monthly, **kw)
@@ -377,7 +391,7 @@ with tab_shop:
                "his own store. Green = Shopify earns more per bag (before monthly fixed costs).")
 
     with st.expander("Fee sources and notes"):
-        for name, f in ch_mod.FEES.items():
+        for name, f in fees_used.items():
             st.markdown(f"- **{name}**: {f.note}")
         st.markdown("Sources: " + " · ".join(f"[{k}]({v})" for k, v in ch_mod.SOURCES.items()))
         st.caption("Once trading as a business, buyers have a 14-day right to cancel online purchases "
@@ -412,8 +426,10 @@ with tab_about:
 - **Shopify break-even**: compares his own store with each marketplace for a typical
   clearance bag and a premium bag: profit per bag, bags per month needed to cover Shopify's
   fixed costs, the price premium or marketing budget that makes Shopify worth it, and a
-  sensitivity grid. Marketplace fees are the published UK seller fees; Shopify's extra costs
-  (marketing, authentication, postage, packaging, returns) are adjustable assumptions.
+  sensitivity grid. Marketplace fees are the published UK seller fees, replaced by his actual
+  fee rate on any platform where he has at least two sales with a recorded fee (toggle in the
+  sidebar). Shopify's extra costs (marketing, authentication, postage, packaging, returns) are
+  adjustable assumptions.
 
 **Definitions**
 

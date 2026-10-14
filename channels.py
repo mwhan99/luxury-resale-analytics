@@ -173,6 +173,38 @@ def sensitivity(price: float, landed: float, shop: ShopifyCosts, compare_to: str
     return pd.DataFrame(grid, index=[f"£{m} marketing" for m in marketing_levels])
 
 
+MIN_OBSERVED_SALES = 2   # need at least this many recorded fees before trusting his own rate
+
+
+def observed_fee_rates(df: pd.DataFrame, min_sales: int = MIN_OBSERVED_SALES) -> dict:
+    """His actual fee rate per channel, from sold bags where a fee was really recorded.
+
+    Only rows with a positive recorded fee count, because a blank fee is stored as
+    "payout = sale price" and would otherwise look like a 0% fee. eBay is skipped:
+    the tracker doesn't say whether a sale was private (free) or business.
+    Returns {channel: (rate, number_of_sales)}.
+    """
+    s = df[df["is_sold"] & df["fees"].notna() & (df["fees"] > 0) & (df["sale"] > 0)]
+    out = {}
+    for name in FEES:
+        if name == SHOPIFY or name.startswith("eBay"):
+            continue
+        x = s[s["channel"] == name]
+        if len(x) >= min_sales:
+            out[name] = (float(x["fees"].sum() / x["sale"].sum()), len(x))
+    return out
+
+
+def fee_table(observed: dict | None = None) -> dict[str, Fees]:
+    """Published fee schedules, with his actual rate swapped in where observed."""
+    table = dict(FEES)
+    for name, (rate, n) in (observed or {}).items():
+        table[name] = Fees(commission_pct=rate, private_only=FEES[name].private_only,
+                           note=f"His actual rate: {rate:.1%} of the sale price, from {n} recorded sales "
+                                f"(published schedule: {FEES[name].note})")
+    return table
+
+
 def typical_bags(df: pd.DataFrame) -> dict:
     """Typical sale price and landed cost per sourcing type, from the tracker."""
     out = {}

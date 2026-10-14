@@ -62,3 +62,25 @@ def test_typical_bags_from_tracker():
     lots = df[df["sourcing"] == "Clearance lot"]
     assert typ["Clearance lot"]["price"] == lots.loc[lots["is_sold"], "sale"].median()
     assert typ["Clearance lot"]["landed"] == pytest.approx(lots["landed_cost"].mean())
+
+
+def test_observed_vestiaire_rate_from_tracker():
+    # The tracker has two Vestiaire sales with recorded fees (about 19% of the sale price)
+    obs = ch.observed_fee_rates(calc.load_tracker(DEMO))
+    rate, n = obs["Vestiaire Collective"]
+    assert n == 2
+    assert 0.17 < rate < 0.21
+    assert not any(k.startswith("eBay") for k in obs)   # eBay private vs business is unknown
+
+
+def test_blank_fees_are_not_treated_as_zero_percent():
+    # Vinted/Depop rows with no recorded fee must not create a 0% "observed" rate
+    obs = ch.observed_fee_rates(calc.load_tracker(DEMO))
+    assert "Vinted" not in obs and "Depop" not in obs
+
+
+def test_actual_rate_overrides_published_fee():
+    table = ch.fee_table({"Vestiaire Collective": (0.19, 2)})
+    t = ch.per_bag_table(600, 280, SHOP, fees=table)
+    assert profit(t, "Vestiaire Collective") == pytest.approx(600 - 0.19 * 600 - 280)
+    assert profit(t, "Vinted") == pytest.approx(320)                  # untouched channels unchanged

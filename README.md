@@ -31,14 +31,15 @@ Key questions:
 - **Shopify is judged against each marketplace, not in isolation.** Most UK marketplaces are now free or nearly free for sellers, so his own store only pays off if it adds price or saves fees that outweigh its extra costs. A toggle switches to business-seller fees, since eBay's free private-seller option ends once he trades as a registered brand. Another swaps in his actual fee rate on any platform where at least two sales have a recorded fee, without treating blank fees as zero.
 - **Estimated data is flagged, not hidden.** Rows with unrecorded fees are marked so overstated profit is visible.
 
-## Early findings (shipment 1, 15 bags: patterns to test, not conclusions)
+## Findings so far (3 shipments plus a Vinted collab, 62 bags: patterns to test, not conclusions)
 
-- **The founder's own records overstated realized profit by roughly 45% at the time of review**, mainly because bags still in stock were counted as sales and recorded platform fees were left out of the profit formula. His ROI column was also multiplied by 100 twice.
-- **Clearance lots beat hand-picked stock on return.** 13 of 14 clearance-lot bags have sold at about an 80% margin; the one hand-picked premium bag earned about 33% while tying up roughly ten times as much money.
-- **His real Vestiaire Collective fees are higher than published.** Two sales with recorded fees both came to about 19% of the sale price, against roughly 15% on the published schedule. The app can use either.
-- **Shopify only pays off for premium bags.** On a typical clearance bag, his own store earns well under what Vinted does once marketing, authentication, postage, packaging and returns are counted, and would need a ~35–40% higher price to match. On a premium bag it beats Vestiaire Collective: by a few percent of the sale price at published fees (covering its fixed costs from 2–3 sales a month), and by about 7% at his actual fees (from about one sale a month).
-- **His most profitable sale came through his personal network**: a private sale with no platform fee, which supports building a direct customer list.
-- Fees and listing/sale dates are still missing for most bags, so days-to-sell can't be measured yet and profit is likely still overstated.
+- **The founder's own records overstated profit.** At first review his sheet booked profit on bags still in stock and left recorded platform fees out of the profit formula (overstating realized profit by roughly 45% at the time), and his ROI column multiplied by 100 twice. Later, two purchase prices typed with comma decimals were read as text and silently dropped from cost.
+- **The cheap first lot was by far the best use of money.** Shipment 1, a clearance lot of low-cost bags, returned several times its cost. Shipments 2 and 3 were much larger lots of higher-value bags and returned about 40% each: more profit at risk, much lower return per pound.
+- **Fast exit vs. margin.** Selling a whole lot to a trade buyer cleared stock quickly with no platform fees, but at about a third margin on the sale price; Vinted and Depop sales of cheap stock kept far more of each sale.
+- **Real Vestiaire fees vary by sale.** Across 12 recorded sales his fees average about 16% of the sale price, with two early sales at about 19%; the app uses his actual average where at least two fees are recorded.
+- **Cost allocation matters.** In one lot, per-bag costs were split in proportion to sale price, which makes every bag's margin identical by construction. Lot-level results are reliable; per-bag comparisons inside that lot are not.
+- **Shopify only pays off for higher-value bags,** and only if winning each buyer stays cheap: on low-priced stock his own store earns well under Vinted once marketing, authentication, postage, packaging and returns are counted.
+- Listing and sale dates are still missing, so days-to-sell can't be measured yet.
 
 ## Run it
 
@@ -53,6 +54,6 @@ Marketplace fees live in `channels.py` (checked 13 Oct 2026, with sources). Upda
 
 ## Data and privacy
 
-- `data/demo_tracker.xlsx`: **demo data.** Based on the business's real first shipment, with each bag's amounts randomly scaled (by up to ±15%) and bag IDs, supplier names, lot names and serial codes replaced. Margins, rankings and conclusions match the real data; individual figures do not.
+- `data/demo_tracker.xlsx`: **demo data.** Based on the business's real shipments, with each bag's amounts randomly scaled (by up to ±15%) and bag IDs, supplier names, lot names and serial codes replaced. Margins, rankings and conclusions match the real data; individual figures do not.
 - `data/blank_tracker.xlsx`: the empty template the founder fills in.
 - Real data is never committed: `.gitignore` blocks it. Each new shipment is disguised the same way before it is added.

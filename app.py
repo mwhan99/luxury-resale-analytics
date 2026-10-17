@@ -55,8 +55,8 @@ def hbar(series: pd.Series, title: str):
 # ---------------------------------------------------------------- data
 st.sidebar.header("Data")
 upload = st.sidebar.file_uploader("Upload the latest tracker (.xlsx)", type=["xlsx"],
-                                  help="Your file is only used in your own browser session. It is not saved "
-                                       "or shown to anyone else, and is gone when you close the tab.")
+                                  help="Your file is processed only for your current session: it is not saved "
+                                       "by the app or shown to other visitors, and is gone when you close the tab.")
 source = upload if upload is not None else DATA
 try:
     df = calc.load_tracker(source)
@@ -64,7 +64,7 @@ except Exception as e:  # noqa: BLE001
     st.error(f"Couldn't read the tracker: {e}")
     st.stop()
 st.sidebar.caption("Using: your uploaded file (visible only to you)" if upload is not None
-                   else "Using: demo data (disguised shipment 1)")
+                   else "Using: demo data (disguised shipments)")
 st.sidebar.caption(f"{len(df)} bags · {df['lot'].nunique()} lot(s)/purchase(s)")
 
 lots = sorted(df["lot"].dropna().unique())
@@ -108,7 +108,7 @@ with st.sidebar.expander("Shopify cost assumptions"):
 
 st.title("Resale Analytics")
 if upload is None:
-    st.info("**Demo data.** Based on a real first shipment from a small UK resale business, with each bag's "
+    st.info("**Demo data.** Based on real shipments from a small UK resale business, with each bag's "
             "amounts randomly scaled (up to ±15%) and identifying details removed for the founder's privacy. "
             "Patterns and conclusions match the real data; individual figures do not.")
 st.caption("Vintage luxury bags sourced in Tokyo, sold in the UK. "

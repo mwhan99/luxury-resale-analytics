@@ -65,11 +65,11 @@ def test_typical_bags_from_tracker():
 
 
 def test_observed_vestiaire_rate_from_tracker():
-    # The tracker has two Vestiaire sales with recorded fees (about 19% of the sale price)
+    # Vestiaire sales with recorded fees: roughly 15-19% of the sale price depending on the sale
     obs = ch.observed_fee_rates(calc.load_tracker(DEMO))
     rate, n = obs["Vestiaire Collective"]
-    assert n == 2
-    assert 0.17 < rate < 0.21
+    assert n >= 2
+    assert 0.12 < rate < 0.22
     assert not any(k.startswith("eBay") for k in obs)   # eBay private vs business is unknown
 
 

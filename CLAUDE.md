@@ -8,9 +8,12 @@ Resale analytics for a small vintage luxury bag business (bought in Tokyo,
 sold in the UK). Meng calls it "LongStory". The README deliberately doesn't
 name the business: don't add the name anywhere public without the founder's OK.
 
-- Website: Next.js on Vercel, in `web/` (Root Directory = `web` in Vercel).
-- Backup: the original Streamlit app, `app.py`. Keep it working: older
-  applications link to it.
+- Website: https://resale-analytics.vercel.app (Next.js on Vercel, in `web/`;
+  Vercel project `resale-analytics`, Root Directory = `web`). Vercel redeploys
+  on every push to `main`. Also reachable at web-theta-topaz-onn4siex8q.vercel.app.
+- Backup: the original Streamlit app, `app.py`, with a "faster new home"
+  banner at the top (`NEW_SITE_URL`). Keep it working: older applications
+  link to it.
 - Sibling projects with the same setup: `~/Documents/HiddenHire` and
   `~/Documents/VentureLens`. Their CLAUDE.md files are useful references.
 

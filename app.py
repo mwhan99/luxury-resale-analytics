@@ -106,6 +106,26 @@ with st.sidebar.expander("Shopify cost assumptions"):
     )
     st.caption(f"= {gbp(shop.per_bag, 2)} extra per Shopify sale, {gbp(shop.fixed_monthly, 2)} fixed per month")
 
+# The site moved to Vercel, which loads instantly. This app stays up as a
+# backup so older links keep working. The link opens in a new tab: on
+# Streamlit Cloud the app runs inside a frame that can't change the page
+# around it.
+NEW_SITE_URL = "https://resale-analytics.vercel.app"
+st.markdown(
+    """<style>
+    .moved-banner { display: block; background: #1f4d3a; border-radius: 12px; color: #ffffff !important;
+        font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; padding: 0.8rem 1rem; text-decoration: none !important; }
+    .moved-banner span { color: #f4e8d0; }
+    .moved-banner:hover span { text-decoration: underline; }
+    .moved-banner .nowrap { white-space: nowrap; }
+    </style>"""
+    f'<a class="moved-banner" href="{NEW_SITE_URL}" target="_blank" rel="noopener">'
+    "<b>Resale Analytics has a faster new home.</b> "
+    "<span>Same tools and demo data, with no wait to load. Visit "
+    '<span class="nowrap">resale-analytics.vercel.app →</span></span></a>',
+    unsafe_allow_html=True,
+)
+
 st.title("Resale Analytics")
 if upload is None:
     st.info("**Demo data.** Based on real shipments from a small UK resale business, with each bag's "

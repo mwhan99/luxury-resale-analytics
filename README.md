@@ -1,5 +1,7 @@
 # Resale Analytics
 
+**Live site: [resale-analytics.vercel.app](https://resale-analytics.vercel.app)** · the original Streamlit app stays up as a backup.
+
 Sourcing, pricing and channel decisions for a small vintage luxury bag resale business that buys stock in Tokyo and sells it in the UK on Vinted, Depop, eBay and Vestiaire Collective, ahead of launching its own brand on Shopify.
 
 ## The problem

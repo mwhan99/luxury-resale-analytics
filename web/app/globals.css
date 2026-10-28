@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* "Atelier" design: warm ivory paper, espresso ink, bottle-green accent and a
+   serif display face. Deliberately different from HiddenHire (navy/cobalt)
+   and VentureLens (violet). Loss red and profit green are only used for
+   numbers that are a loss or a profit. */
+:root {
+  --background: #f6f1e9;
+  --foreground: #1f1a15;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: #fffdf9;
+  --color-ink: #1f1a15;
+  --color-muted: #6c6157;
+  --color-faint: #958a7e;
+  --color-line: #e6ddd0;
+  --color-sand: #efe7da;
+  --color-brand: #1f4d3a;
+  --color-brand-dark: #163a2b;
+  --color-brand-soft: #e2ece5;
+  --color-brass: #a87b2f;
+  --color-brass-soft: #f4e8d0;
+  --color-loss: #a5362a;
+  --color-loss-soft: #f7e1dc;
+  --color-gain: #2c6b45;
+  --font-sans: var(--font-instrument-sans);
+  --font-display: var(--font-fraunces);
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Sliders in the brand colour */
+input[type="range"] {
+  accent-color: var(--color-brand);
+}
+
+/* Hide the scrollbar on the phone nav row but keep it scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

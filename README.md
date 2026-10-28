@@ -41,16 +41,34 @@ Key questions:
 - **Shopify only pays off for higher-value bags,** and only if winning each buyer stays cheap: on low-priced stock his own store earns well under Vinted once marketing, authentication, postage, packaging and returns are counted.
 - Listing and sale dates are still missing, so days-to-sell can't be measured yet.
 
+## How it's built
+
+- **Analysis in Python.** `calc.py` and `channels.py` hold every calculation, in plain pandas, tested with `pytest` against the tracker spreadsheet's own formulas and hand calculations. `app.py` is the original Streamlit app.
+- **Website in Next.js on Vercel** (`web/`). The same calculations in TypeScript (`web/lib/`), running in the visitor's browser. There is no server or database, so every page is prebuilt and loads instantly. An opened tracker is read by the browser itself and never leaves the device.
+- **Golden tests keep the two in step.** `scripts/export_golden.py` saves the Python results for the demo data and a set of fixed inputs; `npm test` checks the TypeScript gives the same answers to 9 significant digits, including reading the `.xlsx` file.
+
 ## Run it
+
+The website:
+
+```bash
+cd web
+npm install
+npm run dev        # then open http://localhost:3000
+npm test           # TypeScript vs Python
+```
+
+The original Streamlit app:
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
+pytest
 ```
 
-The app opens with the disguised demo data. To see real figures, upload a real tracker in the sidebar: it is used only in your own browser session and is never saved or shown to other visitors. Run `pytest` to check the calculations against the tracker spreadsheet's own formulas and against hand calculations.
+Both open with the disguised demo data. To see real figures, open a real tracker: on the website it is read only by your browser; on Streamlit it is used only for your session. Neither saves it or shows it to other visitors.
 
-Marketplace fees live in `channels.py` (checked 13 Oct 2026, with sources). Update them there when platforms change their fees.
+Marketplace fees live in `channels.py` and `web/lib/channels.ts` (checked 13 Oct 2026, with sources). When platforms change their fees, update both, run `python scripts/export_golden.py`, then `npm test` in `web/`.
 
 ## Data and privacy
 
